@@ -21,15 +21,15 @@ import User from "./users/User";
 
 function App() {
    const [user, setUser] = useState(null);
-     const [role, setRole] = useState('');
-  //  const navigate= useNavigate ()
+  //    const [role, setRole] = useState('');
+  // //  const navigate= useNavigate ()
   //  const admin1='user'
 
    useEffect(() => {
      // auto-login
      fetch("/me").then((r) => {
        if (r.ok) {
-         r.json().then((user) => setUser(user), setRole(user.role));
+         r.json().then((user) => setUser(user));
        }
      });
    }, []);
@@ -59,7 +59,16 @@ function App() {
         <Route path="/edit/admin/:id" element={<AdminEditProject />}></Route>
         <Route path="/cohort" element={<Cohort />}></Route>
         <Route path="/user" element={<User />}></Route>
-        <Route path="/admin" element={<AdminAllProjects />}></Route>
+        <Route
+          path="/admin"
+          element={
+            user.role === "admin" ? (
+              <AdminAllProjects />
+            ) : (
+              <Navigate replace to={"/"} />
+            )
+          }
+        ></Route>
       </Routes>
       {/* <Routes>
         <Route path="/userD" element={<UserDashboard />} />
